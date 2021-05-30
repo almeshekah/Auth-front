@@ -33,6 +33,7 @@ export const signin = (userData, history) => {
 	return async (dispatch) => {
 		try {
 			const res = await instance.post("/signin", userData);
+			console.log(res.data.data);
 			localStorage.setItem("myToken", res.data.token);
 			await dispatch(setUser(res.data.token));
 			toast.success("Signed in successfuly!");

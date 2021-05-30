@@ -1,20 +1,50 @@
-import { AuthButtonStyled } from "../../styles";
-import { Link } from "react-router-dom";
+//styles
+import { Logo, ThemeButton, NavItem, NavStyled } from "./styles";
+import { signout } from "../../store/actions/authActions";
+import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+const NavBar = (props) => {
+	const user = useSelector((state) => state.authReducer.user);
+	const dispatch = useDispatch();
+	const history = useHistory();
 
-const NavBar = ({ currentTheme, toggleTheme }) => {
+	const handleSignout = () => {
+		dispatch(signout());
+		history.push("/");
+	};
+
 	return (
-		<nav className="navbar navbar-expand">
-			<div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div className="navbar-nav ml-auto">
-					<Link to="/signup">
-						<AuthButtonStyled>Sign up</AuthButtonStyled>
-					</Link>
-					<Link to="/signin">
-						<AuthButtonStyled>Sign in</AuthButtonStyled>
-					</Link>
-				</div>
-			</div>
-		</nav>
+		<div className="navbar navbar-expand">
+			{user ? (
+				<p>Hala </p>
+			) : (
+				<>
+					<NavItem className="nav-item nav-link" to="/signup">
+						Signup
+					</NavItem>
+
+					<NavItem className="nav-item nav-link" to="/signin">
+						Sign in
+					</NavItem>
+				</>
+			)}
+
+			{user && (
+				<>
+					<NavItem className="nav-item nav-link" onClick={handleSignout} to="/">
+						Sign out
+					</NavItem>
+					<div className="navbar-nav ml-auto">
+						<NavItem className="nav-item" to="/products">
+							Products
+						</NavItem>
+						<NavItem className="nav-item nav-link" to="/shops">
+							Shops
+						</NavItem>
+					</div>
+				</>
+			)}
+		</div>
 	);
 };
 
